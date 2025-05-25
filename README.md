@@ -1,5 +1,11 @@
 # Proiect PCLP3 - Analiza informatiilor rutiere de pe anumite Autostrazi
 
+<p>
+Proiect realizat de Karina-Marina Antoniu și Andrei-Marcel Bădulescu,
+Universitatea Politehnica București. <br>
+Data – 25 mai 2025
+</p>
+
 ### Descarcarea datelor
 
 Setul de date propus este destinat unei probleme de regresie. Fisierul .csv contine informatii despre traficul pe anumite autostrazi si a fost preluat de pe site-ul https://www.asfinag.at/verkehr-sicherheit/verkehrszaehlung/. Sunt colectate date din mai multe intervale de timp (zile lucratoare, weekend, sarbatori legale) si pe mai multe categorii de autovehicule. Coloana tinta am ales-o ca fiind DTVMS Mo-So Kfz/24h si reprezinta traficul mediu pe toata saptamana pentru toate tipurile de autovehicule.
