@@ -5,7 +5,6 @@ import csv
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.preprocessing import StandardScaler
-import seaborn as sns
 
 if __name__=="__main__":
 	# citesc fisierul
@@ -155,5 +154,3 @@ if __name__=="__main__":
 	plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
 	plt.grid(True)
 	plt.show()
-
-

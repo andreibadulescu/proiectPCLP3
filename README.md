@@ -44,3 +44,10 @@ Pentru realizarea acestui proiect am folosit informatiile din curs si laborator,
 	https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html
 	https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html
 	https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html
+
+
+### Task 2
+
+https://www.geeksforgeeks.org/ml-label-encoding-of-datasets-in-python/
+https://pandas.pydata.org/docs/reference/index.html
+https://stackoverflow.com/questions/17097236/replace-invalid-values-with-none-in-pandas-dataframe
