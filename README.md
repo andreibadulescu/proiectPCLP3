@@ -48,7 +48,153 @@ Pentru realizarea acestui proiect am folosit informatiile din curs si laborator,
 
 ### Task 2
 
-empty...
+### Prelucrarea datelor
+<p> Subseturile de date au fost preluate din task-ul 1. În urma importării acestora
+din fișierele .csv (mai exact <i>'Autostrazi_Antrenare.csv'</i> și
+<i>'Autostrazi_Testare.csv'</i>), nu au fost normate / standardizate variabilele
+numerice, întrucât în urma unei astfel de operațiuni, ar fi fost pierdută relevanța
+modelului (valoarea maximă de trafic pe un tronson nu este cunoscută, și atunci
+nu pot fi făcute ajustări / normări / standardizări). Valorile care reprezentau
+categorii (clasa de autovehicule analizată și tipul de măsurătoare / numărare)
+au fost codificate pentru a economisi memorie sub forma unor numere întregi.
+Valorile lipsă au fost înlocuite cu media valorilor de trafic calculate pentru
+fiecare clasă în parte pentru a nu afecta antrenarea modelurilor (dacă valorile
+-1 erau păstrate, atunci astfel de anomalii pot afecta semnificativ comportamentul
+modelului de predicție).
+</p>
+
+### Analiza exploratorie a datelor
+<p>
+În urma prelucrării datelor, este afișată o analiză asupra valorilor lipsă / nule,
+însă aceasta va indica că setul de date este complet, întrucât valorile nule au fost
+înlocuite de medie în cadrul pasului de prelucrare al datelor. Sunt afișate date
+generale referitoare la subsetul de antrenament și cel de testare, iar mai apoi
+sunt afișate diferite grafice ce au scopul de a analiza variabilele numerice și cele
+ce reprezintă categorii. Detecția anomaliilor este posibilă prin interpretarea
+boxplot-urilor, analiza corelațiilor dintre variabilele numerice este ilustrată cu
+ajutorul heatmap-urilor și relațiile dintre valorile țintă și predictori reies
+din diagramele de tip scatter.
+</p>
+
+#### Analiză detaliată a diagramelor
+
+<p>
+Histograma pentru DTSV Sonn - und Feiertage este asimetrica, in jurul
+valorii 0 a axei OX s-au inregistrat putin sub 250 de autovehicule.
+Valorile scad brusc cu cat ne departam de origine pe axa OX, indicand
+ca majoritatea zilelor de weekend si sarbatori legale traficul auto
+este redus. Avand in vedere ca exista o singura coloana cu valori
+foarte mari, iar celelalte sunt aproape nule poate aparea problema
+unei erori de masurare. Pentru o analiza mai buna putem sa verificam
+corectitudinea datelor, pentru a nu repeta valori sau sa nu existe
+valori aberante. De asemenea, se pot trage concluzii cu privire la
+calitatea drumului sau importanta acestuia. Spre exemplu, acolo unde
+avem valori aproape nule, pot aparea motive tehnice care trebuie
+investigate (exemplu drumuri stricate sau blocate). Aceste sosele
+reprezinta alternative in situatia supraaglomerarii.
+</p>
+
+<p>
+In comparatie, histograma care prezinta traficul zilnic mediu
+scade treptat. Exista si aici un maxim, care este atins pentru
+traficul cu media cuprinsa intre 0 si 20, unde numarul de observatii
+este trecut de 80. Graficul sugereaza ca traficul se concentreaza
+in intervale medii spre ridicate. Pe masura ce traficul creste,
+numarul de observatii scade. Astfel, prima coloana poate fi o zona
+aglomerata, pe care multi soferi o aleg in detrimentul celorlalte
+datoria conexiunilor cu alte drumuri princiapale. Avand in vedere
+ca scade liniar, nu se pune se pune problema unui set de date
+gresit sau predominat de valori aberante. De asemenea, diferenta
+poate proveni din cauze perioadelor in care s-au efectuat
+observatiile (spre exemplu perioada de vacanta vs perioada obisnuita).
+Un mod de preprocesare ar putea fi tratarea variabilelor lipsa,
+adica inlocuirea acestora cu valori medii sau pur si simplu ignorarea acestora.
+</p>
+
+<p>
+Pentru histogramele DTVSA (traficul mediu pentru transportul greu),
+DTVMS (transportul rutier motorizat greu) si DTVDD (densitatea
+traficului de tranzit), scaderea este brusca. Prima coloana are
+valori foarte mari urmand ca celelalte sa se apropie de 0. De
+aici putem trage concluzia ca exista erori de numarare sau date
+aberante care strica corectitudinea graficului. In cazul in care
+acestea se dovedesc a fi corecte putem vorbi de un trafic accentuat
+in anumite perioade sau pe anumite sosele pe care soferii de autovechicule
+ce transporta marfuri grele le aleg. Din grafice, se observa ca in general
+toate vehiculele sunt usoare (precum masinile personale), iar
+vehiculele putin mai grele precum autobuzele si autocarele sunt extrem
+de rare. Una din suspiciuni poate fi reprezentata de zona in care a fost
+efectuata colectarea de date. Daca este o zona rezidentiala traficul de
+marfa nu se va face pe rutele respective.
+</p>
+
+<p>
+Barploturile sunt relevate pentru a observa calitatea datelor. Spre
+exemplu, Barplotul pentru Datengute (atat pentru Testing cat si pentru
+Training) sugereaza ca datele sunt bune. Graficul isi atinge maximul
+in coloana 20 acolo unde se fac si cele mai multe observatii. Astfel,
+dintre toate datele colectate cele mai multe sunt corecte. Acest lucru
+poate ridica suspiciuni: daca datele sunt invechite sau colectate din
+zonele ideale. O valoare slaba (din grafice rezulta ca sunt putine
+cazuri in care se indeplineste) poate duce la subestimari sau
+supraestimari ale traficului din anumite zone.
+</p>
+
+<p>
+Barploturile pentru Fahrzeugklasse sunt echilibrate, sugestie a faptului
+ca datele colectate provin de la toate tipurile de masini. Avem
+autovehicule cu dimensiuni variate, norme de poluare diferite si greutati
+si aspecte tehnice diverse.
+</p>
+
+<p>
+Boxploturile evidentiaza ca valorile aberante sunt in partea dreapta a
+graficelor si se intind pe intervale restranse. Acestea sunt reprezentate
+cu cerculete, iar valoarea medie este trasata cu rosu in partea stanga.
+Avand in vedere distanta (uneori prea mare) dintre valoarea medie si
+valorile aberante ar trebui sa tratam separat cazurile respective.
+</p>
+
+<p>
+Pentru Scatter Plotul din Figura 4, majoritatea datelor sunt concentrate
+in coltul din stanga jos si indica o frecventa scazuta a traficului greu
+atat la orele de varf, cat si in intreaga zi, dar in partea dreapta sus
+avem si cateva exceptii. Datele sugereaza ca traficul greu este sporadic,
+iar vehiculele grele circula rar in acea zona. Punctele extreme pot
+corespunde unor evenimente speciale, care ar trebui investigate separat
+pentru a nu exista erori.
+</p>
+
+<p>
+Diagrama de tip Scatter pentru transportul rutier motorizat greu indica
+valori mari pentru statiile numerotate intre 0 si 1000, dar exista
+si cateva pentru statiile apropiate de 6000. Asta poate sugera
+faptul ca drumurile pe care sunt amplasate statiile 1001 - 5999 sunt
+in zone urbane care nu sunt frecventate de masinile de marfa.
+</p>
+
+### Antrenarea și compararea a trei algoritmi de regresie
+<p>
+Pentru modelele de antrenament am ales algoritmii de regresie liniară,
+Ridge Regression și Decision Tree Regressor. După ce am antrenat fiecare
+model, am calculat și predicțiile oferite de fiecare model de Machine
+Learning. Analiza referitoare la rezultatele obținute în comparație cu
+rezultatele așteptate este realizată în următoarea secțiune.
+</p>
+
+### Evaluarea performanței
+<p>
+Folosind predicțiile și rezultatele așteptate (expected vs.
+predicted) am calculat metricile R squared și Root Mean Squared Error,
+pe care le-am salvat într-un Data Frame care este afișat utilizatorului.
+De asemenea, am afișat și o diagramă de tip scatter pentru a ilustra
+deviația predicțiilor modelului față de rezultatele așteptate. Modelul
+de regresie liniară obține rezultate foarte asemănătoare cu Ridge Regression,
+ambele dintre ele fiind în aparență mai performante ca Decision Tree Regressor.
+Cu toate acestea, cele două scoruri calculate (R squared și Root Mean
+Squared Error) indică faptul că Decision Tree Regressor este mai precis decât
+celelalte două.
+</p>
 
 ### Bibliografie
 

@@ -238,9 +238,8 @@ plt.grid(True)
 plt.show()
 print()
 
-# comentarii referitoare la rezultatele analizei exploratorii a datelor
-
-# to do
+# comentariile referitoare la rezultatele analizei exploratorii a datelor
+# pot fi găsite în README
 
 # task 2.3 + 2.4
 # 3) antrenarea si compararea a 3 algoritmi de ML
