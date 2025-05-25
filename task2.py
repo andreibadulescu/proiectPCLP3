@@ -3,6 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 from sklearn import preprocessing
+from sklearn.metrics import r2_score, root_mean_squared_error
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.tree import DecisionTreeRegressor
 
 # import dataset
 trainingDataset = pd.read_csv('Autostrazi_Antrenare.csv', encoding='utf-8-sig', sep=',', on_bad_lines='skip')
@@ -188,14 +191,14 @@ plt.show()
 # analiza corelatiilor
 print('Opening heatmaps...')
 heatmap = trainingDataset[numericColumns].corr()
-plt.figure(figsize=(12, 12))
+plt.figure(figsize=(10, 10))
 plt.imshow(heatmap, cmap='coolwarm')
 plt.colorbar(label='Coeficient de corelație')
 plt.yticks(ticks=range(len(heatmap.columns)), labels=heatmap.columns)
 plt.title("Heatmap (Training Dataset)")
 
 heatmap = testingDataset[numericColumns].corr()
-plt.figure(figsize=(12, 12))
+plt.figure(figsize=(10, 10))
 plt.imshow(heatmap, cmap='coolwarm')
 plt.colorbar(label='Coeficient de corelație')
 plt.yticks(ticks=range(len(heatmap.columns)), labels=heatmap.columns)
@@ -205,13 +208,6 @@ plt.show()
 # analiza relatiilor cu variabila tinta
 print('Opening scatter plots...')
 plt.figure(figsize=(10, 5))
-plt.scatter(trainingDataset['Zählstellen-nummer'], trainingDataset['DTVMS Mo-So Kfz/24h'], alpha=0.6, color='red')
-plt.title('Scatter Plot - ID couting station and DTVMS Mo-So Kfz/24h (Training)')
-plt.xlabel('ID counting station')
-plt.ylabel('DTVMS Mo-So Kfz/24h')
-plt.grid(True)
-
-plt.figure(figsize=(10, 5))
 plt.scatter(trainingDataset['DTVMS Mo-Fr Kfz/24h'], trainingDataset['DTVMS Mo-So Kfz/24h'], alpha=0.6, color='red')
 plt.title('Scatter Plot - Mean traffic values during workdays and general mean traffic values (Training)')
 plt.xlabel('DTVMS Mo-Fr Kfz/24h')
@@ -219,9 +215,9 @@ plt.ylabel('DTVMS Mo-So Kfz/24h')
 plt.grid(True)
 
 plt.figure(figsize=(10, 5))
-plt.scatter(testingDataset['Zählstellen-nummer'], testingDataset['DTVMS Mo-So Kfz/24h'], alpha=0.6, color='red')
-plt.title('Scatter Plot - ID couting station and DTVMS Mo-So Kfz/24h (Testing)')
-plt.xlabel('ID counting station')
+plt.scatter(trainingDataset['DTVMS Mo Kfz/24h'], trainingDataset['DTVMS Mo-So Kfz/24h'], alpha=0.6, color='red')
+plt.title('Scatter Plot - Mean traffic values on Mondays and general mean traffic values (Training)')
+plt.xlabel('DTVMS Mo Kfz/24h')
 plt.ylabel('DTVMS Mo-So Kfz/24h')
 plt.grid(True)
 
@@ -232,4 +228,114 @@ plt.xlabel('DTVMS Mo-Fr Kfz/24h')
 plt.ylabel('DTVMS Mo-So Kfz/24h')
 plt.grid(True)
 
+plt.figure(figsize=(10, 5))
+plt.scatter(testingDataset['DTVMS Mo Kfz/24h'], testingDataset['DTVMS Mo-So Kfz/24h'], alpha=0.6, color='red')
+plt.title('Scatter Plot - Mean traffic values on Mondays and general mean traffic values (Testing)')
+plt.xlabel('DTVMS Mo Kfz/24h')
+plt.ylabel('DTVMS Mo-So Kfz/24h')
+plt.grid(True)
+
 plt.show()
+print()
+
+# comentarii referitoare la rezultatele analizei exploratorii a datelor
+
+# to do
+
+# task 2.3 + 2.4
+# 3) antrenarea si compararea a 3 algoritmi de ML
+# 4) evaluarea performantei
+
+# pregatim datele pentru ML
+targetColumn = 'DTVMS Mo-So Kfz/24h'
+predictorsColumns = ['DTVMS Mo-Fr Kfz/24h', 'DTVMS Mo Kfz/24h']
+predictorsTraining = trainingDataset[predictorsColumns]
+targetsTraining = trainingDataset[targetColumn]
+predictorsTesting = testingDataset[predictorsColumns]
+targetsTesting = testingDataset[targetColumn]
+
+# rulam si evaluam performanta algoritmului linear regression
+linearRegModel = LinearRegression()
+linearRegModel = linearRegModel.fit(predictorsTraining, targetsTraining)
+linearRegPredictions = linearRegModel.predict(predictorsTesting)
+
+R2Linear = r2_score(targetsTesting, linearRegPredictions)
+RMSELinear = root_mean_squared_error(targetsTesting, linearRegPredictions)
+print("Linear Regression")
+print("R2 score:")
+print(R2Linear)
+
+print("RMSE score:")
+print(RMSELinear)
+print()
+
+# rulam si evaluam performanta algoritmului ridge regression
+ridgeRegModel = Ridge()
+ridgeRegModel = ridgeRegModel.fit(predictorsTraining, targetsTraining)
+ridgeRegPredictions = ridgeRegModel.predict(predictorsTesting)
+
+R2Ridge = r2_score(targetsTesting, ridgeRegPredictions)
+RMSERidge = root_mean_squared_error(targetsTesting, ridgeRegPredictions)
+print("Ridge Regression")
+print("R2 score:")
+print(R2Ridge)
+
+print("RMSE score:")
+print(RMSERidge)
+print()
+
+# rulam si evaluam performanta algoritmului decision tree regressor
+decTreeRegModel = DecisionTreeRegressor()
+decTreeRegModel = decTreeRegModel.fit(predictorsTraining, targetsTraining)
+decTreeRegPredictions = decTreeRegModel.predict(predictorsTesting)
+
+R2DecTree = r2_score(targetsTesting, decTreeRegPredictions)
+RMSEDecTree = root_mean_squared_error(targetsTesting, decTreeRegPredictions)
+print("Decision Tree Regressor")
+print("R2 score:")
+print(R2DecTree)
+
+print("RMSE score:")
+print(RMSEDecTree)
+print()
+
+# construim un tabel cu scorurile obtinute
+print("Table with ML model scores:")
+mlModelsScores = {}
+mlModelsScores['LinearReg'] = [R2Linear, RMSELinear]
+mlModelsScores['RidgeReg'] = [R2Ridge, RMSERidge]
+mlModelsScores['DecTreeReg'] = [R2DecTree, RMSEDecTree]
+scoreDF = pd.DataFrame(mlModelsScores)
+print(scoreDF)
+print()
+
+# prima linie reprezinta scorul R2
+# a doua linie reprezinta valorile root mean squared error
+
+# afisarea unor diagrame de tip scatter pentru evaluarea predictiilor
+# in raport cu rezultatele asteptate
+
+print("Opening scatter diagrams for prediction analysis...")
+plt.figure(figsize=(10, 5))
+plt.scatter(targetsTesting, linearRegPredictions, alpha=0.4, color='green')
+plt.title('Scatter Plot - Actual expected values vs predicted values (via Linear Regression)')
+plt.xlabel('Expected Values')
+plt.ylabel('Predicted Values')
+plt.grid(True)
+
+plt.figure(figsize=(10, 5))
+plt.scatter(targetsTesting, ridgeRegPredictions, alpha=0.4, color='green')
+plt.title('Scatter Plot - Actual expected values vs predicted values (via Ridge Regression)')
+plt.xlabel('Expected Values')
+plt.ylabel('Predicted Values')
+plt.grid(True)
+
+plt.figure(figsize=(10, 5))
+plt.scatter(targetsTesting, decTreeRegPredictions, alpha=0.4, color='green')
+plt.title('Scatter Plot - Actual expected values vs predicted values (via Decision Tree Regressor)')
+plt.xlabel('Expected Values')
+plt.ylabel('Predicted Values')
+plt.grid(True)
+
+plt.show()
+print("Program ended.")

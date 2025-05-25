@@ -48,6 +48,17 @@ Pentru realizarea acestui proiect am folosit informatiile din curs si laborator,
 
 ### Task 2
 
-https://www.geeksforgeeks.org/ml-label-encoding-of-datasets-in-python/
-https://pandas.pydata.org/docs/reference/index.html
-https://stackoverflow.com/questions/17097236/replace-invalid-values-with-none-in-pandas-dataframe
+empty...
+
+### Bibliografie
+
+Următoarele resurse au fost utilizate spre realizarea soluției prezentate:
+- materialele de curs și laborator
+- https://pandas.pydata.org
+- https://scikit-learn.org/
+- https://stackoverflow.com/questions/57348495/what-is-the-good-rmse-root-mean-square-error-value-range-to-justify-the-effici
+- https://stackoverflow.com/questions/26778899/how-to-convert-matrix-to-pandas-data-frame
+- https://www.geeksforgeeks.org/ml-label-encoding-of-datasets-in-python/
+- https://pandas.pydata.org/docs/reference/index.html
+- https://stackoverflow.com/questions/17097236/replace-invalid-values-with-none-in-pandas-dataframe
+- https://discuss.datasciencedojo.com/t/how-to-check-for-missing-values-in-a-pandas-dataframe-using-python/1046/2

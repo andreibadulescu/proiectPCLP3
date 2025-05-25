@@ -134,7 +134,7 @@ if __name__=="__main__":
 	X_train_scaled = scaler.fit_transform(X_train)
 	X_test_scaled = scaler.transform(X_test)
 
-	# antrenez modul (regresie liniara)
+	# antrenez modelul (regresie liniara)
 	model = LinearRegression()
 	model.fit(X_train, y_train)
 
