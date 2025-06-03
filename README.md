@@ -1,10 +1,12 @@
 # Proiect PCLP3 - Analiza informatiilor rutiere de pe anumite Autostrazi
 
 <p>
-Proiect realizat de Karina-Marina Antoniu și Andrei-Marcel Bădulescu,
+Proiect realizat de Karina-Maria Antoniu și Andrei-Marcel Bădulescu,
 Universitatea Politehnica București. <br>
 Data – 25 mai 2025
 </p>
+
+© 2025 Andrei-Marcel Bădulescu, Karina-Maria Antoniu. Toate drepturile rezervate.<br>
 
 ### Descarcarea datelor
 
